@@ -1,0 +1,36 @@
+  
+  .chips-input-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background-color: #f5f8fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .chip {
+    background-color: #1da1f2;
+    color: #fff;
+    border-radius: 20px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .chip-remove {
+    margin-left: 8px;
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    background: none;
+    font-size: 14px;
+  }
+  input {
+    outline: none;
+    border: none;
+    background-color: #f5f8fa;
+    width: 100%; 
+  }
