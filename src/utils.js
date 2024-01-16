@@ -1,16 +1,17 @@
-function generateRandomItemList() {
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const items = [];
+import { faker } from '@faker-js/faker';
 
-    for (let i = 1; i <= 1000; i++) {
-      const randomLetter =
-        alphabet[Math.floor(Math.random() * alphabet.length)];
-      const randomNumber = Math.floor(Math.random() * 1000);
-      const item = `Item ${randomLetter}${randomNumber}`;
-      items.push(item);
-    }
+function generateRandomProfiles() {
+  const sampleProfiles = [];
 
-    return items;
+  for (let i = 1; i <= 20; i++) {
+    sampleProfiles.push({
+      id: i,
+      image: faker.image.avatar(),
+      name: faker.internet.userName(),
+      email: faker.internet.email(),
+    });
   }
+  return sampleProfiles;
+}
 
-  export default generateRandomItemList;
+export default generateRandomProfiles;

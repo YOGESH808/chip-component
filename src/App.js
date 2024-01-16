@@ -1,14 +1,17 @@
 import "./App.css";
-import generateRandomItemList from "./utils"
+import generateRandomProfiles from "./utils"
 import SearchInput from "./components/SearchInput/SearchInput";
 
 function App() {
-  const items = generateRandomItemList();
+  const profiles = generateRandomProfiles();
 
   return (
+    <>
+    <h1 className="heading">Pick Users</h1>
     <div className="search-container">
-      <SearchInput items={items} />
+      <SearchInput profiles={profiles} />
     </div>
+    </>
   );
 }
 

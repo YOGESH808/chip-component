@@ -3,7 +3,7 @@ import "./SuggestionList.css";
 const SuggestionList = ({filteredProfiles,handleItemSelect }) => {
   return (
     <>
-      {filteredProfiles.length > 0 && (
+     {filteredProfiles.length > 0 && (
         <div className="item-list">
           <div className="item-list-scrollable">
             {filteredProfiles.map((profile, index) => (
