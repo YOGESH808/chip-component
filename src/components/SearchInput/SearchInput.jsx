@@ -70,9 +70,7 @@ const SearchInput = ({ profiles }) => {
       inputValue !== "" &&
       filteredProfiles.length > 0
     ) {
-      setChips([...chips, filteredProfiles[0]]);
-      setInputValue("");
-      updateSuggestionListPosition();
+      handleItemSelect(filteredProfiles[0]);
     }
   };
 
