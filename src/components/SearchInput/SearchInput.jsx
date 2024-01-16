@@ -43,6 +43,7 @@ const SearchInput = ({ profiles }) => {
       )
     );
     updateSuggestionListPosition();
+    setHighlightedChip(null);
   };
 
   const handleInputKeyDown = (event) => {
