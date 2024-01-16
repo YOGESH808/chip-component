@@ -92,7 +92,7 @@ const SearchInput = ({ profiles }) => {
     if (!focused) {
       setfilteredProfiles([]);
     }
-  }, [setFocused]);
+  }, [focused]);
   useEffect(()=>{
     updateSuggestionListPosition();
   },[filteredProfiles])
