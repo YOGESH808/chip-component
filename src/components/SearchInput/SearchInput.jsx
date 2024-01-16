@@ -10,17 +10,16 @@ const SearchInput = ({ profiles }) => {
   const inputRef = useRef(null);
   const searchRef = useRef(null);
   const [focused, setFocused] = useState(false);
-  const [inputPosition, setInputPosition] = useState({ top: 40, left: 0 });
+  const [inputPosition, setInputPosition] = useState({ top: 0, left: 0 });
 
   const updateSuggestionListPosition = ()=>{
-    if (inputRef.current) {
       const rect = inputRef.current.getBoundingClientRect();
       const rect2 = searchRef.current.getBoundingClientRect();
-      setInputPosition((prev)=>{return {
-        top: rect.bottom,
-        left: rect.left - rect2.x
-      }});
-    }
+      if(inputRef.current!=null)
+        setInputPosition(()=>{return {
+          top: rect.bottom-searchRef.height,
+          left: rect.left - rect2.x
+        }});
   }
   const handleInputChange = (event) => {
     const value = event.target.value;
@@ -44,6 +43,7 @@ const SearchInput = ({ profiles }) => {
     );
     updateSuggestionListPosition();
     setHighlightedChip(null);
+    setFocused(true);
   };
 
   const handleInputKeyDown = (event) => {
@@ -85,17 +85,18 @@ const SearchInput = ({ profiles }) => {
   const handleOnFocus = () => {
     setFocused(true);
     setfilteredProfiles(profiles.filter((profile) => !chips.includes(profile)));
-    
   };
 
   useEffect(() => {
-    if (!focused) {
-      setfilteredProfiles([]);
+    if(focused) {
+      inputRef.current.focus();
     }
-  }, [focused]);
+  }, [focused,filteredProfiles]);
+
   useEffect(()=>{
     updateSuggestionListPosition();
   },[filteredProfiles])
+  
   return (
     <div className="search-container" ref={searchRef} >
       <div className="chips-input-container">
