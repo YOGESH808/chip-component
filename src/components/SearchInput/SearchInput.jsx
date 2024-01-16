@@ -1,22 +1,23 @@
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 import SuggestionList from "../SuggestionList/SuggestionList";
-import "./SearchInput.css"
-const SearchInput = ({items}) => {
+import "./SearchInput.css";
+
+const SearchInput = ({ profiles }) => {
   const [inputValue, setInputValue] = useState("");
-  const [filteredItems, setFilteredItems] = useState([]);
+  const [filteredProfiles, setfilteredProfiles] = useState([]);
   const [chips, setChips] = useState([]);
   const [highlightedChip, setHighlightedChip] = useState(null);
   const inputRef = useRef(null);
-
+  const [focused,setFocused] = useState(false);
   const handleInputChange = (event) => {
     const value = event.target.value;
     setInputValue(value);
-    setFilteredItems(
-      items.filter(
-        (item) =>
-          !chips.includes(item) &&
-          item.toLowerCase().includes(value.toLowerCase())
+    setfilteredProfiles(
+      profiles.filter(
+        (profile) =>
+          !chips.includes(profile) &&
+          profile.name.toLowerCase().includes(value.toLowerCase())
       )
     );
   };
@@ -24,10 +25,8 @@ const SearchInput = ({items}) => {
   const handleItemSelect = (selectedItem) => {
     setChips([...chips, selectedItem]);
     setInputValue("");
-    setFilteredItems(
-      items.filter(
-        (item) => item !== selectedItem && !chips.includes(item)
-      )
+    setfilteredProfiles(
+      profiles.filter((profile) => profile !== selectedItem && !chips.includes(profile))
     );
   };
 
@@ -40,7 +39,6 @@ const SearchInput = ({items}) => {
     ) {
       const lastChip = chips[chips.length - 1];
       setHighlightedChip(lastChip);
-      // console.log("Highlighted", highlightedChip);
     } else if (
       event.key === "Backspace" &&
       inputValue === "" &&
@@ -48,33 +46,43 @@ const SearchInput = ({items}) => {
     ) {
       handleChipRemove(highlightedChip);
       setHighlightedChip(null);
-      console.log("Highlighted chip after removing", highlightedChip);
     }
 
     if (
       event.key === "Enter" &&
       inputValue !== "" &&
-      filteredItems.length > 0
+      filteredProfiles.length > 0
     ) {
-      setChips([...chips, filteredItems[0]]);
+      setChips([...chips, filteredProfiles[0]]);
       setInputValue("");
     }
   };
 
   const handleChipRemove = (removedChip) => {
-    console.log("removing chip", removedChip);
     const updatedChips = chips.filter((chip) => chip !== removedChip);
     setChips(updatedChips);
-    setFilteredItems([...filteredItems, removedChip]);
+    setfilteredProfiles([...filteredProfiles, removedChip]);
   };
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-    console.log(highlightedChip);
-  }, [chips, highlightedChip]);
+  const handleOnFocus = ()=>{
+    setFocused(true)
+    setfilteredProfiles(
+      profiles.filter((profile) => !chips.includes(profile))
+    );
+  }
 
+  const handleOnBlur = ()=>{
+    setFocused(false);
+    console.log("onBlur");
+  }
+
+
+  useEffect(()=>{
+    if(!focused)
+    {
+      setfilteredProfiles([]);
+    }
+  },[setFocused]);
   return (
     <div className="search-container">
       <div className="chips-input-container">
@@ -83,13 +91,20 @@ const SearchInput = ({items}) => {
             key={index}
             className={`chip ${highlightedChip === chip ? "highlighted" : ""}`}
           >
-            {chip}
-            <button
-              onClick={() => handleChipRemove(chip)}
-              className="chip-remove"
-            >
-              X
-            </button>
+            <img
+              src={chip.image}
+              alt={chip.name}
+              className="chip-image"
+            />
+            <div className="chip-content">
+              <div>{chip.name}</div>
+              <button
+                onClick={() => handleChipRemove(chip)}
+                className="chip-remove"
+              >
+                X
+              </button>
+            </div>
           </div>
         ))}
         <input
@@ -98,10 +113,16 @@ const SearchInput = ({items}) => {
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleInputKeyDown}
-          placeholder="Search items"
+          placeholder="Search profiles"
+          onFocus={handleOnFocus}
         />
       </div>
-      {inputValue !=="" && <SuggestionList handleItemSelect={handleItemSelect} filteredItems={filteredItems}/>}
+      {(
+           <SuggestionList
+          handleItemSelect={handleItemSelect}
+          filteredProfiles={filteredProfiles}
+        />
+      )}
     </div>
   );
 };
